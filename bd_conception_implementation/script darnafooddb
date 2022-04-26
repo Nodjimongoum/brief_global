@@ -1,0 +1,91 @@
+create database darnafooddb;
+
+use darnafooddb;
+
+CREATE TABLE client (
+  id int unsigned NOT NULL AUTO_INCREMENT,
+  nom varchar(150) NOT NULL,
+  addresse varchar(155) NOT NULL,
+  sexe char(1),
+  tel varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+ 
+insert into client values 
+(1, 'Claver', 'Ridina', 'M', '00235 66010101');
+(2, 'Yabo', 'Kabalaye', 'M', '00235 66020202');
+(3, 'Gerard', 'Dembe', 'M', '00235 66030303');
+(4, 'Anne', 'Atrone', 'F', '00235 66040404');
+(5, 'Sophie', 'Moursal', 'F', '00235 66050505');
+(6, 'Ghislaine', 'Abena', 'F', '00235 66060606');
+(7, 'Tamia', 'Diguel', 'F', '00235 66070707');
+(8, 'Abdel', 'Gassi', 'M', '00235 66080808');
+(9, 'Yaya', 'Farcha', 'M', '00235 66090909');
+
+ 
+ select * from client;
+    
+    
+CREATE TABLE produit (
+  id_produit int unsigned NOT NULL AUTO_INCREMENT,
+  nom_produit varchar(150) NOT NULL,
+  description text,
+  prix varchar(20) NOT NULL,
+  quantite varchar(20) NOT NULL,
+  date_peremption varchar(45) NOT NULL,
+  PRIMARY KEY (id_produit),
+  UNIQUE KEY id_produit_UNIQUE (id_produit)
+);
+
+insert into produit values 
+(1, 'Piment', 'epice pour accompagner les repas', '1000', '5', '31-12-2025');
+(2, 'Nere', 'epice pour assaisonner les repas', '1000', '10', '30-08-2024');
+(3, 'Granules', 'a consommer avec eau chaude comme le the et eau fraiche comme du jus', '2000', '6', '31-12-2026');
+(4, 'Viande', 'precuit pour la consommation', '2500', '8', '31-12-2023'),
+(5, 'Spirilune', 'complement alimentaire', '1500', '5', '31-12-2025');
+
+
+select * from produit;
+
+
+CREATE TABLE livreur(
+  id int unsigned NOT NULL AUTO_INCREMENT,
+  nom varchar(150) NOT NULL,
+  addresse varchar(155) NOT NULL,
+  tel varchar(20) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+insert into livreur values 
+(1, 'Fall', 'Bakara', '00235 66000001');
+(2, 'Kone', 'Boudabagar', '00235 66000002'),
+(3, 'Anouska', 'Mardjandafac', '00235 66000003');
+
+
+select * from livreur;
+
+
+CREATE TABLE livraison (
+  id int unsigned NOT NULL AUTO_INCREMENT,
+  libelle varchar(150) NOT NULL,
+  id_produit int unsigned NOT NULL,
+  id_client int unsigned NOT NULL,
+  id_livreur int unsigned NOT NULL,
+  PRIMARY KEY (id),
+  KEY id1 (id,id_produit),
+  KEY tbl_produit (id_produit),
+  KEY id2 (id,id_client),
+  KEY tbl_client (id_client),
+  KEY id3 (id,id_livreur),
+  KEY tbl_livreur (id_livreur),
+  CONSTRAINT tbl_client FOREIGN KEY (id_client) REFERENCES client (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT tbl_livreur FOREIGN KEY (id_livreur) REFERENCES livreur (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT tbl_produit FOREIGN KEY (id_produit) REFERENCES produit (id_produit) ON DELETE CASCADE ON UPDATE CASCADE
+)
+
+
+SELECT * FROM client INNER JOIN produit ON client.id_client=produit.id_produit;
+SELECT * FROM livreur INNER JOIN produit ON livreur.id_livreur=produit.id_produit;
+
+
+SELECT * FROM produit INNER JOIN client ON produit.id_produit = _client.id_cl INNER JOIN livreur ON produit.id_produit = livreur.id_livreur;
